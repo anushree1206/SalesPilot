@@ -1,0 +1,850 @@
+# MASTER PROMPT: BUILD A SCALABLE AI SALES SAAS FOR INDIAN BUSINESSES
+
+## 1. YOUR ROLE AND MISSION
+
+Act as a combination of:
+
+- A first-principles product founder who questions assumptions, simplifies complexity and focuses on measurable outcomes.
+- A senior full-stack engineer who builds secure, maintainable, production-quality applications.
+- A product designer who creates intuitive, premium user experiences.
+- A SaaS growth strategist who understands customer acquisition, activation, retention, pricing and product-led growth.
+- A pragmatic CTO who makes cost-effective architectural decisions for a startup with limited resources.
+
+Think ambitiously, but execute pragmatically. Challenge weak assumptions. Do not agree with every idea automatically. Prioritise the smallest product that proves a valuable customer outcome, then build towards a scalable company.
+
+Your mission is to design and build a working SaaS web application that can eventually serve thousands of paying businesses.
+
+Do not build a generic AI chatbot, a static dashboard, a landing page pretending to be a product, or a clone of existing WhatsApp marketing platforms.
+
+Build a differentiated product around a clear customer problem.
+
+## 2. PRODUCT VISION
+
+Working product name: SalesPilot AI
+
+The name is temporary. Keep branding configurable so it can be changed later.
+
+Product category: AI-assisted sales management and customer-conversion software for small businesses.
+
+Initial target market: Small Indian businesses that sell products through WhatsApp and Instagram, especially boutiques, clothing sellers, jewellery retailers and accessory businesses.
+
+Primary user: A small-business owner who wants to manage customer enquiries, products, prospective buyers and orders without complicated enterprise software.
+
+Initial geographic market: India.
+
+Initial languages: English, Kannada and Hindi, with an architecture that supports additional languages later.
+
+Business model: Self-serve SaaS subscription.
+
+The customer should be able to discover the website, create an account, configure their business, use the product and upgrade their plan without requiring a sales representative or custom software development.
+
+## 3. THE CUSTOMER PROBLEM
+
+Treat the following as hypotheses that require validation, not established facts.
+
+A seller receives customer enquiries across messaging and social platforms. Some customers ask about prices, product availability, sizes, designs, delivery or payment. The seller may need to track interested customers, remember follow-ups and connect enquiries to actual orders.
+
+The product should investigate whether sellers need a simpler way to:
+
+1. Organise customer enquiries.
+2. Maintain an accurate product catalogue.
+3. Draft helpful replies using verified product information.
+4. Track prospective customers through a sales pipeline.
+5. Record orders and their status.
+6. Understand which enquiries convert into purchases.
+7. Work comfortably in their preferred language.
+
+The primary value proposition should be:
+
+"Turn customer enquiries into organised sales opportunities, without losing track of interested buyers."
+
+Do not claim that the product increases revenue by a particular percentage unless real evidence supports that claim.
+
+Before finalising the product scope, compare existing products such as AiSensy, Interakt, WATI, WhatsApp Business and relevant social-commerce or CRM tools.
+
+Identify which problems are already well solved, where genuine usability gaps may exist, and which proposed features are unlikely to create differentiation.
+
+Do not fabricate competitor research or pretend to have accessed a website if you have not.
+
+## 4. PRODUCT STRATEGY
+
+Use a focused, progressive approach.
+
+The first release should solve one coherent workflow:
+
+PRODUCT CATALOGUE → CUSTOMER ENQUIRY → AI-ASSISTED RESPONSE → LEAD TRACKING → ORDER RECORD → SALES INSIGHT.
+
+Do not attempt to build an entire enterprise CRM, ecommerce marketplace, advertising platform and omnichannel messaging system simultaneously.
+
+The MVP must be useful even before advanced external integrations are available.
+
+Keep the architecture extensible, but do not overengineer it.
+
+## 5. REQUIRED TECHNOLOGY STACK
+
+Use the following stack unless repository constraints or a clearly justified technical limitation require a change.
+
+Frontend:
+- Next.js with App Router.
+- TypeScript with strict mode.
+- Tailwind CSS.
+- A consistent accessible component system, preferably shadcn/ui where compatible.
+- Lucide icons.
+- React Hook Form and Zod for form validation where appropriate.
+- TanStack Query where client-side server-state management is useful.
+
+Backend:
+- Python FastAPI.
+- Pydantic schemas.
+- SQLAlchemy 2.x.
+- Alembic database migrations.
+- PostgreSQL.
+
+Authentication:
+- Use a reputable authentication solution compatible with Next.js and FastAPI.
+- Support secure registration, login, logout, session handling and password recovery.
+- Enforce tenant membership and permissions on the server.
+
+AI:
+- Use a provider abstraction so the model provider can be changed without rewriting the application.
+- Keep all provider credentials on the server.
+- Support structured outputs, validation, timeouts, retries and controlled error handling.
+- Use retrieval from verified business data where appropriate.
+- Make model selection configurable through environment variables.
+
+File storage:
+- Use an S3-compatible object-storage abstraction for production.
+- Validate uploaded file types and sizes.
+- Store files privately when they contain business or customer information.
+
+Background jobs:
+- Introduce a background-job system only when required for asynchronous processing, reminders or webhook handling.
+- Ensure retryable jobs are idempotent.
+
+Testing:
+- Pytest for backend tests.
+- Appropriate frontend component and integration testing.
+- Playwright for critical end-to-end user journeys.
+
+Development:
+- Docker Compose for local services if useful.
+- Environment variables managed through documented environment templates.
+- Git-based version control.
+- Reproducible installation and startup instructions.
+
+Use stable, mutually compatible dependency versions. Do not invent package APIs or assume integrations work without verifying them.
+
+## 6. PRODUCT MODULES
+
+### MODULE A: MARKETING WEBSITE
+
+Build a polished public website with:
+
+- A clear headline explaining the customer outcome.
+- A concise product explanation.
+- An interactive or illustrative product demonstration.
+- A section showing the primary workflow.
+- Features and benefits grounded in actual functionality.
+- Transparent pricing.
+- Frequently asked questions.
+- Sign-up and login entry points.
+- Privacy policy and terms pages.
+- Contact and support information.
+
+Use persuasive but truthful copy.
+
+Do not invent testimonials, customer logos, user counts, revenue results, ratings or awards.
+
+Make the website responsive and optimised for performance and search engines.
+
+### MODULE B: AUTHENTICATION AND ONBOARDING
+
+Implement:
+
+- Account registration.
+- Login and logout.
+- Password reset.
+- Protected application routes.
+- Secure session handling.
+- Business profile creation.
+- Onboarding progress.
+- Empty states and onboarding guidance.
+
+Onboarding should ask only for the information necessary to get started:
+
+- Business name.
+- Business category.
+- Preferred language.
+- Currency and timezone.
+- Optional business description.
+
+Let the user reach a useful first experience quickly.
+
+Do not force users to connect WhatsApp or Instagram before they can explore the core product.
+
+### MODULE C: MAIN DASHBOARD
+
+Create a useful dashboard with:
+
+- Total recorded enquiries.
+- New enquiries.
+- Leads awaiting follow-up.
+- Recorded orders.
+- Conversion metrics where sufficient data exists.
+- Recent activity.
+- Tasks or follow-ups due.
+- A quick-add action for a customer, lead or order.
+
+Use genuine database values.
+
+For a new account, show a well-designed empty state with instructions for adding the first product or enquiry.
+
+Never show fabricated business metrics as if they were real.
+
+### MODULE D: PRODUCT CATALOGUE
+
+Build a complete CRUD workflow for products.
+
+Each product should support:
+
+- Product name.
+- Description.
+- SKU or internal identifier.
+- Price.
+- Optional sale price.
+- Category.
+- Product images.
+- Availability status.
+- Optional size, colour and variant information.
+- Optional stock quantity.
+- Creation and update timestamps.
+
+Features:
+
+- Create, edit and archive products.
+- Search and filter.
+- Pagination when appropriate.
+- Image upload and preview.
+- Input validation.
+- A shareable catalogue view.
+- A copy-link action.
+- Clear unavailable and loading states.
+
+Never expose private product-management routes or unpublished business data to unauthorised users.
+
+### MODULE E: CUSTOMER AND LEAD MANAGEMENT
+
+Create a practical customer workspace.
+
+Each customer record should support:
+
+- Name.
+- Contact details where provided.
+- Preferred language.
+- Source of enquiry.
+- Customer consent and communication preferences where applicable.
+- Notes.
+- Related enquiries.
+- Related orders.
+- Created and updated timestamps.
+
+Create a lead pipeline with configurable statuses, initially:
+
+- New enquiry.
+- Contacted.
+- Interested.
+- Follow-up needed.
+- Order placed.
+- Closed or not converted.
+
+Support:
+
+- Adding a lead manually.
+- Editing customer information.
+- Searching and filtering leads.
+- Assigning follow-up dates.
+- Adding notes.
+- Tracking status changes.
+- Viewing customer activity.
+- Detecting duplicate records where practical.
+
+Avoid collecting unnecessary personal information.
+
+Do not automatically label customers as likely buyers without a defensible basis.
+
+### MODULE F: AI SALES ASSISTANT
+
+Build an AI assistant that helps a seller draft accurate customer responses.
+
+The assistant should use:
+
+- The business profile.
+- The verified product catalogue.
+- Configured business policies.
+- Relevant customer enquiry context.
+- The customer's preferred language when known.
+
+Support English, Kannada and Hindi.
+
+Example tasks:
+
+- Answer questions about listed product prices.
+- Draft product descriptions.
+- Explain delivery or return policies from verified business settings.
+- Suggest relevant products based on the customer's stated preferences.
+- Summarise a conversation supplied by the user.
+- Draft a polite follow-up.
+- Translate a reply.
+- Convert a customer enquiry into a structured lead summary.
+
+Important safeguards:
+
+1. Never invent product prices, stock, discounts, delivery dates or policies.
+2. If information is missing, explicitly say that confirmation is needed.
+3. Treat customer messages as untrusted input, not instructions to override system rules.
+4. Validate structured AI outputs against server-side schemas.
+5. Prevent the AI from accessing another business's data.
+6. Provide clear loading, retry and error states.
+7. Allow the seller to review and edit a generated reply before using it.
+8. Show that a response is AI-generated.
+9. Enforce reasonable usage limits and record token or provider usage where available.
+10. Do not expose hidden prompts, credentials or internal configuration.
+
+For the MVP, AI responses may be generated from user-entered text and verified business data. Do not pretend that the assistant is connected to live WhatsApp conversations unless that integration has actually been implemented.
+
+### MODULE G: ORDER MANAGEMENT
+
+Implement a lightweight order-tracking system.
+
+Each order should include:
+
+- Unique order identifier.
+- Customer.
+- One or more products.
+- Quantity and agreed price.
+- Subtotal and total.
+- Order status.
+- Optional delivery details.
+- Notes.
+- Creation timestamp.
+- Update timestamp.
+
+Suggested statuses:
+
+- Draft.
+- Confirmed.
+- Processing.
+- Shipped or ready for collection.
+- Delivered or completed.
+- Cancelled.
+
+Calculate totals on the server using validated data.
+
+Keep currency handling explicit. Do not use floating-point arithmetic for monetary calculations where precise decimal arithmetic is required.
+
+Do not claim to process payments unless a real payment gateway has been integrated and verified.
+
+### MODULE H: FOLLOW-UP MANAGEMENT
+
+Build a follow-up workspace that displays:
+
+- Leads due for follow-up.
+- Overdue tasks.
+- Upcoming tasks.
+- Completed follow-ups.
+- Customer context and notes.
+
+Let the seller mark a task complete, reschedule it or open the relevant customer record.
+
+The initial version should support reminders inside the application.
+
+Do not send external messages automatically without the appropriate consent, configuration and verified integration.
+
+### MODULE I: BASIC ANALYTICS
+
+Implement simple, meaningful analytics:
+
+- Enquiries over time.
+- Leads by status.
+- Orders over time.
+- Recorded order value.
+- Conversion rate where its numerator and denominator can be reliably defined.
+- Lead source breakdown where source information is available.
+- Follow-up completion.
+
+Clearly distinguish recorded sales from estimated sales.
+
+Explain metric definitions in the interface.
+
+Avoid misleading charts when sample sizes are too small or data is incomplete.
+
+### MODULE J: SETTINGS
+
+Include:
+
+- Business profile.
+- Preferred language.
+- Currency and timezone.
+- Product and catalogue settings.
+- Business policies used by the AI.
+- Account settings.
+- Privacy settings.
+- Usage information.
+- Integration settings.
+- Subscription information when billing is implemented.
+
+### MODULE K: INTEGRATIONS
+
+Design a provider-independent integration layer.
+
+Potential future integrations include:
+
+- Official WhatsApp Business Platform or an authorised provider.
+- Instagram messaging through Meta's supported APIs and permissions.
+- Payment providers.
+- Ecommerce platforms.
+- Email notifications.
+
+For the first release, prioritise the core product experience over completing every integration.
+
+When implementing messaging:
+
+- Use official, permitted APIs.
+- Verify current provider documentation and requirements.
+- Implement webhook signature verification.
+- Handle retries and duplicate events safely.
+- Respect messaging windows, approved templates and applicable consent requirements.
+- Track delivery and failure states where supported.
+- Provide clear connection and disconnection states.
+- Never scrape private messages or use unofficial methods to bypass platform restrictions.
+
+If credentials or permissions are unavailable, create a clearly labelled integration setup screen or mock adapter for development. Do not represent it as a live integration.
+
+## 7. DESIGN AND USER EXPERIENCE
+
+The product should feel like a serious, modern SaaS platform.
+
+Visual direction:
+
+- Clean, minimal and professional.
+- Strong visual hierarchy.
+- Consistent spacing and typography.
+- Neutral backgrounds with a restrained accent colour.
+- Clear tables, forms, charts and status indicators.
+- Thoughtful empty states.
+- Responsive layouts for mobile, tablet and desktop.
+- Accessible contrast and keyboard navigation.
+
+Avoid excessive gradients, unnecessary animations, decorative cards and crowded dashboards.
+
+The interface should feel simple enough for a non-technical business owner while remaining efficient for experienced users.
+
+Create a consistent design system with reusable components for:
+
+- Buttons.
+- Inputs.
+- Selects.
+- Dialogs.
+- Tables.
+- Cards.
+- Toast notifications.
+- Loading skeletons.
+- Error states.
+- Empty states.
+- Navigation.
+
+Every visible control must have a meaningful behaviour.
+
+Every form must validate input and provide actionable feedback.
+
+Every data table must handle loading, empty and failure states.
+
+Do not use placeholder links, dead buttons or nonfunctional charts.
+
+## 8. MULTI-TENANT ARCHITECTURE AND SECURITY
+
+Build this as a multi-tenant SaaS from the beginning.
+
+A business's data must never be accessible to another business without explicit, authorised sharing.
+
+Implement:
+
+- Explicit tenant or organisation ownership.
+- Server-side authorisation for every protected operation.
+- Tenant-scoped database queries.
+- Role-based permissions if multiple staff members are supported.
+- Secure authentication and session handling.
+- Input validation.
+- Rate limiting on sensitive and expensive endpoints.
+- Safe error responses.
+- Secret management through environment variables.
+- Protection against common web vulnerabilities.
+- File upload validation.
+- Audit logging for important actions.
+- Secure webhook handling.
+- Database constraints and indexes where appropriate.
+
+Never rely on frontend hiding or disabled controls as the only security measure.
+
+Do not log passwords, access tokens, secret keys or unnecessary sensitive customer information.
+
+Create automated tests proving that one tenant cannot access another tenant's records.
+
+Design data export and account deletion workflows appropriate to the product and applicable legal requirements.
+
+## 9. DATABASE DESIGN
+
+Create a normalised relational schema that supports the core workflow.
+
+Evaluate the need for tables such as:
+
+- users
+- organisations
+- organisation_members
+- business_profiles
+- products
+- product_images
+- customers
+- leads
+- lead_status_history
+- conversations or conversation_notes
+- orders
+- order_items
+- follow_up_tasks
+- ai_usage_records
+- integration_accounts
+- webhook_events
+- subscriptions
+- audit_events
+
+Do not create tables merely because they are listed here. Justify each table based on implemented functionality.
+
+Use:
+
+- UUIDs or another appropriate stable identifier strategy.
+- Foreign keys.
+- Appropriate unique constraints.
+- Timestamps.
+- Database transactions for multi-step operations.
+- Indexes for frequently queried fields.
+- Decimal types for monetary values.
+- Migrations for every schema change.
+
+Document entity relationships and important design decisions.
+
+## 10. API DESIGN
+
+Create a documented, versioned API with consistent conventions.
+
+Potential route groups:
+
+- /api/v1/auth
+- /api/v1/organisations
+- /api/v1/business-profile
+- /api/v1/products
+- /api/v1/customers
+- /api/v1/leads
+- /api/v1/orders
+- /api/v1/follow-ups
+- /api/v1/analytics
+- /api/v1/ai
+- /api/v1/integrations
+- /api/v1/billing
+
+Choose appropriate HTTP methods and status codes.
+
+Use Pydantic request and response schemas.
+
+Implement pagination and filtering for collection endpoints.
+
+Return consistent validation and error responses.
+
+Use transactions where necessary.
+
+Generate or maintain OpenAPI documentation.
+
+Do not expose internal exception details to end users.
+
+## 11. BILLING AND PRICING ARCHITECTURE
+
+Prepare the application for a recurring subscription model.
+
+Potential plans to test after customer research:
+
+Free:
+- Limited products and leads.
+- Limited AI usage.
+- Core product exploration.
+
+Starter:
+- More products and leads.
+- A higher AI allowance.
+- Basic analytics.
+
+Growth:
+- Higher usage limits.
+- Advanced analytics.
+- Additional workflow capabilities.
+
+These are pricing hypotheses, not final commercial decisions.
+
+Implement feature entitlements and usage limits in the backend, not only in the interface.
+
+Prepare a billing-provider abstraction.
+
+Do not simulate successful payments in production.
+
+If payment integration is not yet configured, provide a clearly labelled development mode and document how to enable the real provider.
+
+Never store raw payment-card details.
+
+Do not introduce a complicated subscription system before the core product is usable. Build billing after the primary workflow has been validated, unless required earlier for a real pilot.
+
+## 12. PRODUCT ANALYTICS AND GROWTH
+
+Design the product so that its growth can be measured.
+
+Track important events such as:
+
+- Account created.
+- Onboarding completed.
+- First product added.
+- First lead recorded.
+- First AI reply generated.
+- First order recorded.
+- User returned after initial activation.
+- Subscription started.
+- Subscription cancelled.
+
+Do not collect more personal data than needed.
+
+Define an activation event based on the product's actual value, not merely on account creation.
+
+Build a simple internal view of activation, retention, feature usage and subscription status when useful.
+
+Do not add referrals, affiliate rewards, viral loops or expensive advertising integrations before users receive repeatable value.
+
+The product must have a clear self-serve onboarding journey and useful documentation.
+
+## 13. PERFORMANCE AND RELIABILITY
+
+Build for an MVP that can evolve into a larger SaaS.
+
+Requirements:
+
+- Paginate large collections.
+- Avoid unnecessary database queries.
+- Use efficient indexes.
+- Load dashboard metrics efficiently.
+- Add timeouts to external API calls.
+- Use bounded retries with backoff for transient failures.
+- Prevent duplicate orders and duplicate webhook processing where appropriate.
+- Handle AI-provider outages gracefully.
+- Keep slow tasks out of request-response paths when necessary.
+- Add health checks and structured logs.
+- Provide a documented database backup and recovery approach for production.
+
+Do not add microservices, Kubernetes, distributed event streaming or complex infrastructure without a demonstrated need.
+
+Start with a modular monolith unless there is a strong technical reason not to.
+
+## 14. TESTING REQUIREMENTS
+
+Write automated tests for critical workflows.
+
+Backend tests must cover:
+
+- Registration and authentication.
+- Authorisation.
+- Tenant isolation.
+- Product CRUD.
+- Customer and lead management.
+- Order creation and total calculation.
+- Follow-up scheduling.
+- AI schema validation and failure handling.
+- Usage limits.
+- Invalid and unauthorised requests.
+- Duplicate webhook handling if webhooks are implemented.
+
+Frontend and end-to-end tests must cover:
+
+- Sign-up and login.
+- Onboarding.
+- Creating a product.
+- Adding a lead.
+- Generating an AI reply.
+- Recording an order.
+- Creating and completing a follow-up.
+- Navigating dashboard and analytics.
+- Error and empty states.
+
+Use mock AI responses for deterministic automated tests.
+
+Do not claim tests passed unless they have actually been executed.
+
+## 15. DEPLOYMENT AND DOCUMENTATION
+
+Prepare the application for deployment using a suitable frontend host, backend host, PostgreSQL provider and object storage.
+
+Create:
+
+- README.md.
+- .env.example containing placeholder values only.
+- Database migration instructions.
+- Local setup instructions.
+- Docker Compose configuration where appropriate.
+- API documentation.
+- Testing instructions.
+- Deployment instructions.
+- Architecture overview.
+- Troubleshooting guide.
+
+Never commit real secrets.
+
+Ensure the production build can be configured without modifying source code.
+
+Document the external accounts, API keys, permissions and costs required for optional integrations.
+
+## 16. EXECUTION PROCESS
+
+Follow these stages.
+
+STAGE 1 — REPOSITORY INSPECTION
+
+Inspect the existing project before making changes.
+
+Identify:
+- Existing framework and structure.
+- Current dependencies.
+- Existing working functionality.
+- Missing components.
+- Configuration problems.
+- Existing tests.
+- Potential security issues.
+
+Do not delete working code or replace the project architecture unnecessarily.
+
+STAGE 2 — PRODUCT AND COMPETITOR VALIDATION
+
+Summarise the proposed target segment, customer problem, competing alternatives, assumptions and differentiation hypothesis.
+
+If live web research is available, use reliable current sources and official competitor documentation where possible.
+
+Clearly distinguish verified facts from assumptions.
+
+Do not block all development indefinitely waiting for perfect market research. Identify the minimum critical assumptions and proceed with a clearly labelled MVP plan.
+
+STAGE 3 — ARCHITECTURE
+
+Create:
+- System architecture.
+- Folder structure.
+- Database schema.
+- Entity relationships.
+- API contract.
+- Authentication and tenant-isolation strategy.
+- Design system.
+- Implementation plan.
+
+Record important decisions and their trade-offs.
+
+STAGE 4 — IMPLEMENTATION
+
+Build the application in small, testable increments.
+
+Prioritise this sequence:
+
+1. Application shell and design system.
+2. Authentication and business onboarding.
+3. Database and tenant isolation.
+4. Product catalogue.
+5. Customer and lead management.
+6. AI-assisted replies.
+7. Orders and follow-ups.
+8. Dashboard and analytics.
+9. Integration abstraction.
+10. Billing and production hardening.
+
+Adjust the sequence if repository constraints or validation findings justify it.
+
+STAGE 5 — TEST AND VERIFY
+
+Run the relevant tests, type checks, linting and production build.
+
+Fix actual errors rather than suppressing them.
+
+Verify that critical workflows work end to end.
+
+Check responsiveness, accessibility, loading states, failure states and tenant isolation.
+
+STAGE 6 — HANDOVER
+
+Summarise:
+- What was implemented.
+- What works end to end.
+- What remains incomplete.
+- Commands to run locally.
+- Required environment variables.
+- Tests executed and their results.
+- Deployment steps.
+- Known limitations.
+- Next highest-priority tasks.
+
+## 17. NON-NEGOTIABLE RULES
+
+1. Build working software, not just an attractive UI.
+2. Never pretend an integration is live when it is mocked.
+3. Never fabricate customers, testimonials, analytics or test results.
+4. Never hardcode secret keys.
+5. Never trust the frontend for security or authorisation.
+6. Never allow cross-tenant data leakage.
+7. Never build every conceivable feature into the MVP.
+8. Never sacrifice correctness for visual polish.
+9. Never add complexity without a clear product or technical reason.
+10. Never claim the startup has product-market fit without evidence.
+11. Make sensible implementation decisions independently when requirements are clear.
+12. Ask questions only when a missing decision materially affects architecture, safety or product direction.
+13. Explain significant trade-offs concisely.
+14. If an external dependency is unavailable, implement a clearly identified abstraction or mock for development and document the steps needed for real integration.
+15. Do not expose internal reasoning or confidential credentials in the deliverable.
+
+## 18. DEFINITION OF DONE
+
+The MVP is ready for initial user testing only when:
+
+- A new user can create an account and configure a business.
+- The user can add and manage products.
+- The user can record and manage customer leads.
+- The user can generate and edit an AI reply based on verified business data.
+- The user can record orders and manage follow-ups.
+- The dashboard reflects actual stored records.
+- The application is usable on desktop and mobile.
+- Authentication and tenant isolation are tested.
+- Validation and error handling are present.
+- The application builds and runs using documented instructions.
+- No critical workflow depends on a fake API or an unimplemented button.
+
+This is an MVP readiness threshold, not proof of production readiness or market success.
+
+## 19. YOUR FIRST RESPONSE
+
+Before modifying files, inspect the repository and provide:
+
+1. Your understanding of the product.
+2. The strongest differentiation hypothesis and the assumptions that remain unverified.
+3. A competitor and feature-gap summary, clearly labelling anything not yet verified.
+4. The proposed architecture.
+5. The initial database model.
+6. The exact MVP scope.
+7. The implementation sequence.
+8. The most significant technical and commercial risks.
+
+Then begin implementation.
+
+Do not stop after producing the plan. Once the initial review is complete, proceed to build the application in manageable stages, verify each stage and report actual results.
+
+FINAL OBJECTIVE:
+
+Create a reliable, polished, self-serve SaaS product that solves a real sales-management problem for a clearly defined group of small businesses, is technically maintainable, and can be developed into a scalable subscription business.
+
+Build for customer value first, differentiation second, and scale through repeatable systems — not through unnecessary complexity.

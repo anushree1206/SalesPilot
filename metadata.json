@@ -1,0 +1,6 @@
+{
+  "name": "SalesPilot AI",
+  "description": "AI-assisted sales management and customer conversion platform for Indian social commerce businesses",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
