@@ -876,6 +876,49 @@ fun CollectUpiDialog(
 }
 
 @Composable
+private fun FormField(
+    label: String,
+    isRequired: Boolean = false,
+    optionalHint: String? = null,
+    content: @Composable () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = label,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = SalesPilotTextPrimary
+            )
+            if (isRequired) {
+                Text(
+                    text = " *",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFDC2626)
+                )
+            }
+            if (optionalHint != null) {
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = optionalHint,
+                    fontSize = 11.5.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = SalesPilotTextMuted
+                )
+            }
+        }
+        content()
+    }
+}
+
+@Composable
 fun OnboardingDialog(
     initialProfile: com.example.data.local.entity.BusinessProfileEntity?,
     onDismiss: () -> Unit,
@@ -908,9 +951,9 @@ fun OnboardingDialog(
         "Ethnic Wear & Handlooms",
         "Handcrafted Jewellery",
         "Kurtas & Anarkalis",
-        "Footwear & Accessories",
         "Bridal Lehengas",
-        "Other Retail"
+        "Footwear & Accessories",
+        "Other Boutique"
     )
 
     Dialog(onDismissRequest = onDismiss) {
@@ -920,7 +963,7 @@ fun OnboardingDialog(
             border = BorderStroke(1.5.dp, Color(0xFFC4B5FD)),
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 680.dp)
+                .heightIn(max = 700.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -929,9 +972,19 @@ fun OnboardingDialog(
             ) {
                 // Pinned Header
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Storefront, contentDescription = null, tint = LavenderPrimary, modifier = Modifier.size(24.dp))
+                    Icon(
+                        Icons.Default.Storefront,
+                        contentDescription = null,
+                        tint = LavenderPrimary,
+                        modifier = Modifier.size(24.dp)
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Setup Your Business Profile", fontWeight = FontWeight.Bold, fontSize = 17.sp, color = SalesPilotTextPrimary)
+                    Text(
+                        "Setup Your Business Profile",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 17.sp,
+                        color = SalesPilotTextPrimary
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -950,9 +1003,9 @@ fun OnboardingDialog(
                     modifier = Modifier
                         .weight(1f, fill = false)
                         .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
-                    // Account Architecture Explainer
+                    // Account Architecture Explainer Panel
                     Card(
                         colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F3FF)),
                         shape = RoundedCornerShape(12.dp),
@@ -960,94 +1013,190 @@ fun OnboardingDialog(
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Security, contentDescription = null, tint = LavenderPrimary, modifier = Modifier.size(16.dp))
+                                Icon(
+                                    Icons.Default.Security,
+                                    contentDescription = null,
+                                    tint = LavenderPrimary,
+                                    modifier = Modifier.size(16.dp)
+                                )
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Account Architecture", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color(0xFF5B21B6))
+                                Text(
+                                    "Account Architecture",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.5.sp,
+                                    color = Color(0xFF4C1D95)
+                                )
                             }
-                            Spacer(modifier = Modifier.height(4.dp))
+                            Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "• Local Device Account: Zero latency, offline-ready, 100% private data stored in your phone's Room database.\n• Free 14-day trial included without card details or auto-charges.",
+                                text = "• Local Device Account: Zero latency, offline-ready, 100% private data stored safely in your phone's Room database.\n• Free 14-day trial included without credit card details or auto-charges.",
                                 fontSize = 11.5.sp,
-                                lineHeight = 16.sp,
-                                color = SalesPilotTextSecondary,
+                                lineHeight = 16.5.sp,
+                                color = Color(0xFF1E293B),
                                 fontWeight = FontWeight.Medium
                             )
                         }
                     }
 
-                    OutlinedTextField(
-                        value = businessName,
-                        onValueChange = {
-                            businessName = it
-                            nameError = false
-                        },
-                        label = { Text("Shop / Business Name *") },
-                        isError = nameError,
-                        supportingText = if (nameError) { { Text("Shop name is required", color = MaterialTheme.colorScheme.error) } } else null,
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        colors = salesPilotTextFieldColors(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    // 1. Business Name
+                    FormField(label = "Shop / Business Name", isRequired = true) {
+                        OutlinedTextField(
+                            value = businessName,
+                            onValueChange = {
+                                businessName = it
+                                nameError = false
+                            },
+                            placeholder = { Text("e.g. Ananya Silk Sarees & Boutique", color = Color(0xFF64748B), fontSize = 13.5.sp) },
+                            isError = nameError,
+                            supportingText = if (nameError) { { Text("Shop name is required", color = MaterialTheme.colorScheme.error) } } else null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("onboarding_business_name"),
+                            singleLine = true,
+                            colors = salesPilotTextFieldColors(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
 
-                    OutlinedTextField(
-                        value = ownerName,
-                        onValueChange = { ownerName = it },
-                        label = { Text("Owner Name *") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        colors = salesPilotTextFieldColors(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    // 2. Boutique Category Quick Chips
+                    FormField(label = "Boutique Category", isRequired = false) {
+                        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                categories.take(2).forEach { cat ->
+                                    val isSelected = category == cat
+                                    FilterChip(
+                                        selected = isSelected,
+                                        onClick = { category = cat },
+                                        label = { Text(cat, fontSize = 11.sp, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium) },
+                                        shape = RoundedCornerShape(10.dp),
+                                        colors = FilterChipDefaults.filterChipColors(
+                                            selectedContainerColor = LavenderPrimary,
+                                            selectedLabelColor = Color.White,
+                                            containerColor = Color.White,
+                                            labelColor = SalesPilotTextSecondary
+                                        ),
+                                        border = FilterChipDefaults.filterChipBorder(
+                                            enabled = true,
+                                            selected = isSelected,
+                                            borderColor = Color(0xFFCBD5E1),
+                                            selectedBorderColor = LavenderPrimary
+                                        ),
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                categories.drop(2).take(2).forEach { cat ->
+                                    val isSelected = category == cat
+                                    FilterChip(
+                                        selected = isSelected,
+                                        onClick = { category = cat },
+                                        label = { Text(cat, fontSize = 11.sp, fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium) },
+                                        shape = RoundedCornerShape(10.dp),
+                                        colors = FilterChipDefaults.filterChipColors(
+                                            selectedContainerColor = LavenderPrimary,
+                                            selectedLabelColor = Color.White,
+                                            containerColor = Color.White,
+                                            labelColor = SalesPilotTextSecondary
+                                        ),
+                                        border = FilterChipDefaults.filterChipBorder(
+                                            enabled = true,
+                                            selected = isSelected,
+                                            borderColor = Color(0xFFCBD5E1),
+                                            selectedBorderColor = LavenderPrimary
+                                        ),
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
+                        }
+                    }
 
-                    OutlinedTextField(
-                        value = phone,
-                        onValueChange = {
-                            phone = it
-                            phoneError = false
-                        },
-                        label = { Text("WhatsApp Phone (+91) *") },
-                        placeholder = { Text("+91 98450 12345") },
-                        isError = phoneError,
-                        supportingText = if (phoneError) { { Text("Please enter a valid phone number", color = MaterialTheme.colorScheme.error) } } else null,
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        colors = salesPilotTextFieldColors(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    // 3. Owner Name
+                    FormField(label = "Owner Name", isRequired = true) {
+                        OutlinedTextField(
+                            value = ownerName,
+                            onValueChange = { ownerName = it },
+                            placeholder = { Text("e.g. Priya Sharma", color = Color(0xFF64748B), fontSize = 13.5.sp) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("onboarding_owner_name"),
+                            singleLine = true,
+                            colors = salesPilotTextFieldColors(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
 
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        label = { Text("Business Email (Optional)") },
-                        placeholder = { Text("orders@myboutique.com") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        colors = salesPilotTextFieldColors(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    // 4. WhatsApp Phone
+                    FormField(label = "WhatsApp Phone (+91)", isRequired = true) {
+                        OutlinedTextField(
+                            value = phone,
+                            onValueChange = {
+                                phone = it
+                                phoneError = false
+                            },
+                            placeholder = { Text("e.g. 98450 12345", color = Color(0xFF64748B), fontSize = 13.5.sp) },
+                            isError = phoneError,
+                            supportingText = if (phoneError) { { Text("Please enter a valid phone number", color = MaterialTheme.colorScheme.error) } } else null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("onboarding_phone"),
+                            singleLine = true,
+                            colors = salesPilotTextFieldColors(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
 
-                    OutlinedTextField(
-                        value = upiId,
-                        onValueChange = { upiId = it },
-                        label = { Text("Merchant UPI ID (For Customer Payments)") },
-                        placeholder = { Text("shopname@okhdfcbank") },
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        colors = salesPilotTextFieldColors(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    // 5. Business Email
+                    FormField(label = "Business Email", isRequired = false, optionalHint = "(Optional)") {
+                        OutlinedTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            placeholder = { Text("e.g. orders@ananyaboutique.com", color = Color(0xFF64748B), fontSize = 13.5.sp) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("onboarding_email"),
+                            singleLine = true,
+                            colors = salesPilotTextFieldColors(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
 
-                    OutlinedTextField(
-                        value = shopAddress,
-                        onValueChange = { shopAddress = it },
-                        label = { Text("Shop City & Address (Optional)") },
-                        placeholder = { Text("Malleshwaram, Bangalore - 560003") },
-                        modifier = Modifier.fillMaxWidth(),
-                        maxLines = 2,
-                        colors = salesPilotTextFieldColors(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                    // 6. Merchant UPI ID
+                    FormField(label = "Merchant UPI ID", isRequired = false, optionalHint = "(For Customer QR & Payments)") {
+                        OutlinedTextField(
+                            value = upiId,
+                            onValueChange = { upiId = it },
+                            placeholder = { Text("e.g. ananya@okaxis or boutique@okhdfcbank", color = Color(0xFF64748B), fontSize = 13.5.sp) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("onboarding_upi"),
+                            singleLine = true,
+                            colors = salesPilotTextFieldColors(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
+
+                    // 7. Shop City & Address
+                    FormField(label = "Shop City & Address", isRequired = false, optionalHint = "(Optional)") {
+                        OutlinedTextField(
+                            value = shopAddress,
+                            onValueChange = { shopAddress = it },
+                            placeholder = { Text("e.g. #42, Commercial Street, Bangalore - 560001", color = Color(0xFF64748B), fontSize = 13.5.sp) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .testTag("onboarding_address"),
+                            maxLines = 2,
+                            colors = salesPilotTextFieldColors(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(14.dp))
@@ -1058,10 +1207,13 @@ fun OnboardingDialog(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextButton(onClick = onDismiss) {
-                        Text("Cancel", color = SalesPilotTextSecondary, fontWeight = FontWeight.SemiBold)
+                    TextButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.testTag("onboarding_cancel_button")
+                    ) {
+                        Text("Cancel", color = SalesPilotTextSecondary, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                     Button(
                         onClick = {
                             if (businessName.isBlank()) {
@@ -1086,12 +1238,15 @@ fun OnboardingDialog(
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = LavenderPrimary, contentColor = Color.White),
                         shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.height(44.dp)
+                        modifier = Modifier
+                            .height(46.dp)
+                            .testTag("onboarding_save_button")
                     ) {
-                        Text("Save & Start Trial", fontWeight = FontWeight.Bold)
+                        Text("Save & Start Trial", fontWeight = FontWeight.Bold, fontSize = 14.sp)
                     }
                 }
             }
         }
     }
 }
+
